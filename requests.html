@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заявки | Мой Не Сам</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .requests-list {
+            margin-bottom: 30px;
+        }
+        .request-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .status-new {
+            color: blue;
+        }
+        .status-done {
+            color: green;
+        }
+        .status-canceled {
+            color: red;
+        }
+        .new-request-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Мои заявки</h1>
+        <button class="new-request-btn" onclick="window.location.href='new-request.html'">Создать новую заявку</button>
+        
+        <div class="requests-list">
+            <h2>История заявок</h2>
+            <div class="request-card">
+                <h3>Генеральная уборка</h3>
+                <p>Дата: 15.05.2023, 14:00</p>
+                <p>Адрес: ул. Примерная, д. 10, кв. 25</p>
+                <p class="status-done">Статус: Услуга оказана</p>
+            </div>
+            <div class="request-card">
+                <h3>Химчистка ковра</h3>
+                <p>Дата: 20.05.2023, 10:00</p>
+                <p>Адрес: ул. Примерная, д. 10, кв. 25</p>
+                <p class="status-new">Статус: Новая заявка</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
