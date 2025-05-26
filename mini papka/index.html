@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>НарушениямНет - Портал сознательных граждан</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">НарушениямНет</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="registration.html" id="registerLink" class="hover:text-blue-200 transition">Регистрация</a></li>
+                    <li><a href="login.html" id="loginLink" class="hover:text-blue-200 transition">Вход</a></li>
+                    <li><a href="complaints.html" class="hover:text-blue-200 transition">Заявления</a></li>
+                    <li><a href="admin.html" id="adminLink" class="hover:text-blue-200 transition">Админ панель</a></li>
+                    <li><a href="#" id="logoutLink" class="hover:text-blue-200 transition hidden">Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 flex-grow">
+        <section class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-semibold mb-4">Добро пожаловать на портал "НарушениямНет"!</h2>
+            <p class="text-gray-700">Здесь вы можете сообщить о нарушениях правил дорожного движения и внести свой вклад в безопасность на дорогах.</p>
+        </section>
+    </main>
+
+    <footer class="bg-gray-200 mt-8">
+        <div class="container mx-auto px-4 py-4 text-center text-gray-600">
+            <p>&copy; 2024 НарушениямНет. Все права защищены. Created by "Scrypnik Artur studious".</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const loginLink = document.getElementById('loginLink');
+            const registerLink = document.getElementById('registerLink');
+            const adminLink = document.getElementById('adminLink');
+            const logoutLink = document.getElementById('logoutLink');
+
+            if (isLoggedIn) {
+                loginLink.classList.add('hidden');
+                registerLink.classList.add('hidden');
+                logoutLink.classList.remove('hidden');
+                if (!isAdmin) {
+                    adminLink.classList.add('hidden');
+                }
+            } else {
+                adminLink.classList.add('hidden');
+            }
+
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userLogin');
+                localStorage.removeItem('isAdmin');
+                window.location.reload();
+            });
+        });
+    </script>
+</body>
+</html>

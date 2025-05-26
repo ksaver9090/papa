@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявления о нарушениях - НарушениямНет</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-blue-600 text-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">НарушениямНет</h1>
+            <nav>
+                <ul class="flex space-x-4">
+                    <li><a href="index.html" class="hover:text-blue-200 transition">Главная</a></li>
+                    <li><a href="#" id="logoutLink" class="hover:text-blue-200 transition">Выйти</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <h2 class="text-2xl font-semibold mb-6">Заявления о нарушениях</h2>
+        
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h3 class="text-xl font-semibold mb-4">Отправить заявление</h3>
+            <form id="complaintForm" class="space-y-4">
+                <div>
+                    <label for="carNumber" class="block text-sm font-medium text-gray-700">Номер автомобиля</label>
+                    <input type="text" id="carNumber" name="carNumber" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Описание нарушения</label>
+                    <textarea id="description" name="description" rows="3" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Отправить заявление
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold mb-4">Список заявлений</h3>
+            <div id="complaintsList" class="space-y-4">
+                <!-- Здесь будут отображаться заявления -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Проверка авторизации
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert('Для доступа к этой странице необходимо войти в систему');
+            window.location.href = 'login.html';
+        }
+
+        // Обработка выхода из системы
+        document.getElementById('logoutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userLogin');
+            localStorage.removeItem('isAdmin');
+            window.location.href = 'index.html';
+        });
+
+        // Загрузка и отображение заявлений
+        function loadComplaints() {
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const complaintsListElement = document.getElementById('complaintsList');
+            complaintsListElement.innerHTML = '';
+
+            complaints.forEach((complaint, index) => {
+                const complaintElement = document.createElement('div');
+                complaintElement.className = 'bg-gray-50 p-4 rounded-md';
+                complaintElement.innerHTML = `
+                    <p class="font-semibold">Номер автомобиля: ${complaint.carNumber}</p>
+                    <p>Описание: ${complaint.description}</p>
+                    <p class="text-sm text-gray-500">Статус: ${complaint.status || 'На рассмотрении'}</p>
+                `;
+                complaintsListElement.appendChild(complaintElement);
+            });
+        }
+
+        // Обработка отправки заявления
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const complaintData = Object.fromEntries(formData);
+            
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            complaints.push({
+                carNumber: complaintData.carNumber,
+                description: complaintData.description,
+                status: 'На рассмотрении',
+                user: localStorage.getItem('userLogin')
+            });
+            
+            localStorage.setItem('complaints', JSON.stringify(complaints));
+            alert('Заявление успешно отправлено!');
+            e.target.reset();
+            loadComplaints();
+        });
+
+        // Загрузка заявлений при загрузке страницы
+        loadComplaints();
+    </script>
+</body>
+</html>
